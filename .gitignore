@@ -1,1 +1,15 @@
+
+# python environment:
 ./env
+
+# environment variables:
+.env
+
+
+# cache files:
+__pycache__/
+
+
+# default db:
+db.sqlite3
+
