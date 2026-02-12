@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
+from datetime import timedelta
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -128,3 +129,4 @@ STATIC_URL = "static/"
 # --
 
 AUTH_USER_MODEL = "account.User"
+DEFAULT_TRIAL_DURATION = timedelta(days=5)

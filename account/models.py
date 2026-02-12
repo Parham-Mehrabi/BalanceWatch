@@ -13,8 +13,10 @@ class User(AbstractUser):
 class Subscription(models.Model):
 
     user = models.OneToOneField(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="subscription")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     ends_at = models.DateTimeField(default=timezone.now)
-    
+        
     @property
     def is_active(self) -> bool:
         if self.ends_at:
