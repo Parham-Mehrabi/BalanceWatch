@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from account.models import Subscription
 from django.utils import timezone
+from account.models import Subscription
 
 
 UserModel = get_user_model()
