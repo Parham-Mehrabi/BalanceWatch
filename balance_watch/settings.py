@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", False) == "TRUE"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]   # TODO: fix this
 
 
 # Application definition
@@ -63,13 +63,14 @@ ROOT_URLCONF = "balance_watch.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "account.context_processors.subscription_context"
             ],
         },
     },
@@ -129,5 +130,8 @@ STATIC_URL = "static/"
 
 # --
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 AUTH_USER_MODEL = "account.User"
 DEFAULT_TRIAL_DURATION = timedelta(days=5)

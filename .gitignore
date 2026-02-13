@@ -13,3 +13,5 @@ __pycache__/
 # default db:
 db.sqlite3
 
+# tailwind binary
+tailwindcss.exe
