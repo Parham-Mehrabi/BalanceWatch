@@ -1,29 +1,41 @@
 {% if request.user.is_authenticated %}
-<div style="position: absolute;">
 
-  <div class="navbar bg-base-100 shadow-sm">
-    <div class="flex-1">
-      <a class="btn btn-ghost text-xl">Balance Watch</a>
-    </div>
-    <div class="flex-none">
-      <ul class="menu menu-horizontal px-1">
-        <li><a>Link</a></li>
-        <li>
-          <details>
-            <summary>{{ request.user.username }}</summary>
-            <ul class="bg-base-100 rounded-t-none">
-              {% if not is_active == True %}
-              <li>subscription: {{ remaining_days }}</li>
-              {% else %}
-              <li class="text-error">subscription: Expired</li>
-              
-              {% endif %}
-              <li><a></a></li>
-            </ul>
-          </details>
+
+
+<!-- Navbar -->
+<div class="navbar flex top-0 left-0 right-0 z-50 shadow-lg border-none">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <label tabindex="0" class="btn btn-ghost">
+        {{ user.username }}
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+        </svg>
+      </label>
+      <ul tabindex="0" class="menu menu-compact dropdown-content mt-5 p-2 shadow-lg bg-base-100 rounded-box w-52">
+
+        {% if is_active == True %}
+        <li class="text-wrap font-semibold text-info break-words">Subscription: {{ remaining_days }}</li>
+        {% else %}
+        <li class="text-error font-semibold">
+          <span class="block">subscription Expired</span>
         </li>
+        {% endif %}
+        <li><a href="{% url 'account:details'%}">Profile</a></li>
+        <form action="{% url 'account:logout'%}" method="post">
+          {% csrf_token %}
+          <li>
+
+            <button type="submit" class="text-error">Logout</button>
+          </li>
+        </form>
       </ul>
     </div>
+  </div>
+  <div class="navbar-center">
+    <a class="btn btn-ghost normal-case text-xl" href="{% url 'home' %}">BalanceWatch</a>
+  </div>
+  <div class="navbar-end">
   </div>
 </div>
 {% endif %}

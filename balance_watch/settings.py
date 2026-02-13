@@ -56,6 +56,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    "balance_watch.middleware.subscription_check.ActiveSubscriptionMiddleware",
 ]
 
 ROOT_URLCONF = "balance_watch.urls"
@@ -135,3 +137,13 @@ STATICFILES_DIRS = [
 ]
 AUTH_USER_MODEL = "account.User"
 DEFAULT_TRIAL_DURATION = timedelta(days=5)
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache", #TODO: Change this later
+        "LOCATION": "balanceWatch-memcache",
+    }
+}
+
+LOGIN_REDIRECT_URL = "home"

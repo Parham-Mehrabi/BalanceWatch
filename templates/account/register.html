@@ -1,0 +1,132 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %} Register {% endblock %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center px-4">
+
+    <form method="post">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+        <div class="mb-4 rounded-md bg-red-500/10 border border-red-500/30 p-3 text-red-400 text-sm">
+            {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="space-y-12">
+            <div class="border-b border-white/10 pb-12">
+                <h1 class="font-bold text-6xl text-white my-4 text-center">Register account</h1>
+                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                    <div class="sm:col-span-4">
+                        <label for="{{ form.username.id_for_label }}"
+                            class="block text-sm/6 font-medium text-white">Username</label>
+                        <div class="mt-2">
+                            <div
+                                class="flex items-center rounded-md bg-white/5 pl-3 outline-1 -outline-offset-1 outline-white/10 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-500">
+                                <div class="shrink-0 text-base text-gray-400 select-none sm:text-sm/6">
+                                </div>
+                                {{ form.username}}
+                            </div>
+                            {% for error in form.username.errors %}
+                            <p class="mt-1 text-sm text-error">
+                                {{ error }}
+                            </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="sm:col-span-4">
+                        <label for="{{ form.password1.id_for_label }}"
+                            class="block text-sm/6 font-medium text-white">Password</label>
+                        <div class="mt-2">
+                            <div
+                                class="flex items-center rounded-md bg-white/5 pl-3 outline-1 -outline-offset-1 outline-white/10 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-500">
+                                <div class="shrink-0 text-base text-gray-400 select-none sm:text-sm/6">
+                                </div>
+                                {{ form.password1}}
+                            </div>
+                            {% for error in form.password1.errors %}
+                            <p class="mt-1 text-sm text-error">
+                                {{ error }}
+                            </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="sm:col-span-4">
+                        <label for="{{ form.password2.id_for_label }}"
+                            class="block text-sm/6 font-medium text-white">Confirm Password</label>
+                        <div class="mt-2">
+                            <div
+                                class="flex items-center rounded-md bg-white/5 pl-3 outline-1 -outline-offset-1 outline-white/10 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-500">
+                                <div class="shrink-0 text-base text-gray-400 select-none sm:text-sm/6">
+                                </div>
+                                {{ form.password2 }}
+                            </div>
+                            {% for error in form.password2.errors %}
+                            <p class="mt-1 text-sm text-error">
+                                {{ error }}
+                            </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div>
+                    <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                        <div class="sm:col-span-3">
+                            <label for="{{ form.first_name.id_for_label }}"
+                                class="block text-sm/6 font-medium text-white">First name</label>
+                            <div class="mt-2">
+                                {{ form.first_name }}
+                            </div>
+                            {% for error in form.first_name.errors %}
+                            <p class="mt-1 text-sm text-error">
+                                {{ error }}
+                            </p>
+                            {% endfor %}
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="{{ form.last_name.id_for_label}}"
+                                class="block text-sm/6 font-medium text-white">Last name</label>
+                            <div class="mt-2">
+                                {{ form.last_name }}
+                            </div>
+                            {% for error in form.last_name.errors %}
+                            <p class="mt-1 text-sm text-error">
+                                {{ error }}
+                            </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="sm:col-span-4">
+                    <label for="{{ form.email.id_for_label }}" class="block text-sm/6 font-medium text-white">Email
+                        address</label>
+                    <div class="mt-2">
+                        {{ form.email }}
+                    </div>
+                    {% for error in form.email.errors %}
+                    <p class="mt-1 text-sm text-error">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="mt-6 flex items-center justify-end gap-x-6">
+
+            <button type="submit"
+                class="cursor-pointer rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Sign
+                up</button>
+        </div>
+        <p class="text-sm/3 text-white">already have an account? <a class="text-info"
+                href="{% url 'account:login' %}">login</a></p>
+    </form>
+
+</div>
+{% endblock %}

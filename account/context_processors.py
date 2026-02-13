@@ -3,7 +3,6 @@ from account.models import Subscription
 
 def subscription_context(request):
     if not request.user.is_authenticated:
-        print(11)
         return {}
     
     sub = Subscription.objects.filter(user=request.user).first()
