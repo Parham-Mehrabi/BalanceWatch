@@ -6,7 +6,8 @@ from django.conf import settings
 
 class User(AbstractUser):
     
-    pass    # default user would do for now
+    is_onboarded = models.BooleanField(default=False)
+    daily_goal_transaction = models.DecimalField(max_digits=12, default=0, decimal_places=0)
 
 
 
@@ -22,3 +23,8 @@ class Subscription(models.Model):
         if self.ends_at:
             return self.ends_at > timezone.now()
         return True
+
+
+class OnboardingProgress(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="setup_step")
+    completed_steps = models.PositiveSmallIntegerField(default=0)

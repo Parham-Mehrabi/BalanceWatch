@@ -1,0 +1,34 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block costume_js %}
+<script src="{% static 'js/htmx.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="flex flex-1 flex-col justify-start items-center gap-6 p-2 m-2 h-full">
+    <div>
+        <h1 class="text-4xl space-y-6 text-primary">Welcome to BalanceWatch</h1>
+    </div>
+    <div class="text-2xl text-secondary">
+        <p>
+            Your account has successfully created. BalanceWatch needs you to set up your account so it can calculate the
+            graphs
+            and goals for you.
+        </p>
+        <p>here is a short set up to tune your account:</p>
+    </div>
+
+    <div class="flex w-full flex-col gap-2 justify-between h-full" id="setup-step"
+        hx-get="{% url 'account:setup_step' %}" hx-trigger="load" hx-target="#setup-step" hx-swap="innerHTML">
+        <div class="flex w-52 flex-col gap-4">
+            <div class="skeleton h-32 w-full"></div>
+            <div class="skeleton h-4 w-28"></div>
+            <div class="skeleton h-4 w-full"></div>
+            <div class="skeleton h-4 w-full"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

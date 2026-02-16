@@ -1,0 +1,36 @@
+<div class="divider"></div>
+
+<form hx-post="{% url 'account:setup_step' %}" hx-target="#setup-step" hx-swap="innerHTML" novalidate>
+  {% csrf_token %}
+
+  <div class="flex h-full flex-col gap-7 items-center">
+  
+    {% for field in form %}
+
+    <div class="flex justify-between h-full w-full">
+      <div class="flex-1">
+
+        <label for="{{ field.id_for_label }}" class="font-black"> {{ field.label }}: </label>
+      </div>
+      <div class="flex-1">
+        {{ field }}
+      </div>
+      <div class="text-wrap flex-1">
+        <p>
+          {{field.help_text}}
+        </p>
+      </div>
+    </div>
+    <ul class="flex flex-col gap-1 list-disc p-4 disc">
+      {% for error in field.errors %}
+      <li class="text-sm text-error font-semibold">
+        {{field.label }}: {{error}}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endfor %}
+    <button class="btn btn-primary"> Next</button>
+  </div>
+</form>
+
+<div class="divider">Step {{ step }} of {{ total_steps }}</div>

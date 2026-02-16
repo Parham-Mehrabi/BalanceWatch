@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-from account.models import Subscription
+from account.models import Subscription, OnboardingProgress
 
 
 UserModel = get_user_model()
@@ -10,6 +10,7 @@ UserModel = get_user_model()
 
 
 admin.site.register(UserModel)
+admin.site.register(OnboardingProgress)
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):

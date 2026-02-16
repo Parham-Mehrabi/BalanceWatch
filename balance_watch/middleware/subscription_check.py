@@ -20,11 +20,11 @@ class ActiveSubscriptionMiddleware:
     If user is logged without an active subscription, block access except for whitelist URLs.
     """
 
-    WHITELIST = [
+    WHITELIST = {
         "account:login",
         "account:register",
         "account:subscription_expired"
-    ]
+    }
 
     def __init__(self, get_response):
         self.get_response = get_response

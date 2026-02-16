@@ -3,6 +3,8 @@
 @source not "./tailwindcss.exe";
 @source not "./daisyui{,*}.mjs";
 
-@plugin "./daisyui.mjs";
+@plugin "./daisyui.mjs"{
+    themes: night, dracula, dark, light
+};
 @source "../../templates/**/*.html";
 @source "../../templates/*.html";

@@ -58,6 +58,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 
     "balance_watch.middleware.subscription_check.ActiveSubscriptionMiddleware",
+    "balance_watch.middleware.force_profile_setup.ForceProfileSetupMiddleware",
 ]
 
 ROOT_URLCONF = "balance_watch.urls"
