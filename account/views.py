@@ -1,15 +1,18 @@
+from datetime import timedelta
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
 from django.shortcuts import redirect
+from django.utils import timezone
 from django.views.generic import TemplateView, FormView, View
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.template.response import TemplateResponse
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.db import transaction
+from django.db.models import Sum
 from account.forms import LoginForm, RegisterForm, Step1Form, Step2Form, Step3Form
 from account.models import OnboardingProgress
-from ledger.models import Wallet
+from ledger.models import Wallet, Transaction
 # Create your views here.
 
 
@@ -37,7 +40,32 @@ class SubExpired(LoginRequiredMixin, TemplateView):
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'account/profile.html'
 
+    def get_context_data(self, **kwargs):
 
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        wallet:Wallet = user.wallets.first()
+        context['wallet'] = wallet
+        last_transactions = []
+        today_transactions_sum = 0
+        
+        if wallet:
+            last_transactions = Transaction.objects.filter(wallet=wallet).order_by("-occurred_at")[:10]
+            today = timezone.localdate()
+            result = Transaction.objects.filter(wallet=wallet, occurred_at__date=today).aggregate(total_sum=Sum("amount"))
+            today_transactions_sum = result["total_sum"] or 0
+            wallet_balance = wallet.expected_balance
+        else:
+            wallet.balance = 0
+
+        context["last_transactions"] = last_transactions
+        context["today_transactions_sum"] = today_transactions_sum
+        context["goal_per_cent"] = round(((wallet_balance / (user.balance_goal + 1)) * 100), 2)
+        context["daily_goal_percent"] = round(((today_transactions_sum / (user.daily_goal_transaction + 1)) * 100), 2)
+
+
+        return context
 
 class RegisterView(FormView):
     template_name = 'account/register.html'

@@ -3,13 +3,112 @@
 
 {% block title %} Profile {% endblock %}
 {% block content %}
-<h1>
-    {{ user }} profile
-</h1>
-<h1>
-    
-    {{ remaining_days }}
+<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:p-8 lg:m-8 md:p-4 md:m-4 m-2 p-2">
 
-</h1>
+    <div class="card">
+        <div class="card-buddy">
+            {% if is_active %}
+            <span class="badge badge-xs badge-success">Subscribed</span>
+            {% else %}
+            <span class="badge badge-xs badge-error">No Subscription</span>
+            {% endif %}
+            <h2 class="text-3xl font-bold">{{user}}</h2>
+        </div>
+        <ul class="mt-6 flex flex-col gap-2 list-disc">
+            <li class="flex justify-between">
+                <span>{{wallet.foreign_currency}} balance:</span> <span> {{wallet.foreign_balance}}</span>
+            </li>
+            <li class="flex justify-between">
+                <span>Toman balance: </span><span>{{wallet.expected_balance}}</span>
+            </li>
+            <li class="flex justify-between">
+                <span>Toman balance:</span><span> {{wallet.expected_balance}}</span>
+            </li>
+            <li class="flex justify-between">
+                <span>daily goal transaction:</span><span> {{user.daily_goal_transaction}}</span>
+            </li>
+            <li class="flex justify-between">
+                <span>todays total transactions:</span><span> {{today_transactions_sum}}</span>
+            </li>
+            <li class="flex justify-between">
+                <span>balance goal:</span><span> {{user.balance_goal}}</span>
+            </li>
+        </ul>
+        <div class="divider"></div>
+    </div>
+
+        <div class="flex flex-col justify-between">
+            <div>
+                <p class="text font-bold flex start">
+                    daily transaction goal:
+                </p>
+            </div>
+            <div class="radial-progress text-info thickness" style="--value: {{ daily_goal_percent }}; --size:10rem;"
+                role="progressbar">
+                {{ daily_goal_percent }}%
+            </div>
+            <div class="divider"></div>
+        </div>
+
+        <div class="flex flex-col justify-between">
+            <div>
+                <p class="text font-bold flex start">
+                    balance goal:
+                </p>
+            </div>
+            <div class="radial-progress text-secondary thickness"
+                style="--value: {{ goal_per_cent }}; --size:10rem;" role="progressbar">
+                {{ goal_per_cent }}%
+            </div>
+            <div class="divider"></div>
+        </div>
+
+
+    <div class="flex flex-col items-center justify-between">
+        <div>
+
+            <div class="stat-title">Subscription ends in</div>
+            <div class="text-3xl font-semibold text-info">{{ remaining_days }} days</div>
+        </div>
+        <div class="divider"></div>
+    </div>
+
+</div>
+{% if last_transactions %}
+<div class="overflow-auto sm:col-span-2 lg:col-span-4 p-4">
+    <table class="table w-full table-zebra">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>date</th>
+                <th>amount</th>
+                <th>action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in last_transactions %}
+            <tr class="hover:bg-base-300">
+                <th>{{ forloop.counter }}</th>
+                <td>{{transaction.occurred_at}}</td>
+                <td>{{transaction.amount}}</td>
+                {% if transaction.action == 'deposit' %}
+                <td class="font-black text-success">{{ transaction.action}}</td>
+                {% else %}
+                <td class="font-black text-error">{{ transaction.action}}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="overflow-auto sm:col-span-2 lg:col-span-4 p-4">
+    <div class="alert alert-error flex flex-col">
+        <p class="text-bold">No transactions yet.</p>
+        <p>your last transactions will be displayed in below in a table</p>
+    </div>
+</div>
+{% endif %}
+</div>
 
 {% endblock %}

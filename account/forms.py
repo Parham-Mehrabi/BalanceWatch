@@ -94,7 +94,7 @@ class Step2Form(forms.ModelForm):
             "step": 100_000_000
         })
         self.fields["initial_balance"].help_text = (
-        "this is the money you initially have in your account "
+        "how much money you already have in your account "
         "declare that based on tomans"
         )
 

@@ -8,7 +8,8 @@ class User(AbstractUser):
     
     is_onboarded = models.BooleanField(default=False)
     daily_goal_transaction = models.DecimalField(max_digits=12, default=0, decimal_places=0)
-
+    
+    balance_goal = models.DecimalField(max_digits=20, decimal_places=0, default=0)
 
 
 class Subscription(models.Model):
