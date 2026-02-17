@@ -1,5 +1,14 @@
 {% if request.user.is_authenticated %}
 
+<script>
+  function setTheme(theme) {
+    console.log(theme);
+    console.log(555);
+    
+    document.cookie = `theme=${encodeURIComponent(theme)};path=/;Max-Age=${60 * 60 * 24 * 180};sameSite=lax`
+    document.documentElement.setAttribute("data-theme", theme);
+  }
+</script>
 
 
 <!-- Navbar -->
@@ -35,7 +44,17 @@
   <div class="navbar-center">
     <a class="btn btn-ghost normal-case text-xl" href="{% url 'home' %}">BalanceWatch</a>
   </div>
+
   <div class="navbar-end">
+    <select class="select appearance-none max-w-32" onchange="setTheme(this.value)">
+      {% for allowed_theme in allowed_themes %}
+      {% if allowed_theme == theme %}
+      <option value="{{allowed_theme}}" selected>{{ allowed_theme }}</option>
+      {% else %}
+      <option value="{{allowed_theme}}">{{ allowed_theme }}</option>
+      {% endif %}
+      {% endfor %}
+    </select>
   </div>
 </div>
 {% endif %}

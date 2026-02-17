@@ -4,11 +4,6 @@
 {% block costume_js %}
 <script src="{% static 'js/htmx.min.js' %}"></script>
 <script src="{% static 'js/chart.umd.min.js' %}"></script>
-
-
-<script>
-
-</script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         function readJsonScript(container, id) {
@@ -67,20 +62,15 @@
             });
         }
 
-        // When HTMX swaps in new content
         document.body.addEventListener("htmx:afterSwap", (e) => {
             initTransactionsGraph(e.target);
             const moneyElements = document.querySelectorAll("span.money");
-            console.log(moneyElements)
             moneyElements.forEach(function (el) {
                 let rawValue = el.textContent.trim();
 
                 rawValue = rawValue.replace(/,/g, '');
-                console.log(rawValue)
-                // Convert to number
                 const number = Number(rawValue);
 
-                // Only format if it's a valid number
                 if (!isNaN(number)) {
                     el.textContent = number.toLocaleString('en-US');
                 }

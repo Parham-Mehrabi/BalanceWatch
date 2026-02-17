@@ -73,7 +73,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "account.context_processors.subscription_context"
+                "account.context_processors.subscription_context",
+                "balance_watch.context_processors.ui_theme"
             ],
         },
     },
@@ -148,3 +149,13 @@ CACHES = {
 }
 
 LOGIN_REDIRECT_URL = "home"
+
+
+UI_THEMES = [
+    "dark",
+    "night",
+    'dracula',
+    'dim',
+    "light",
+    "valentine",
+    ]
