@@ -1,0 +1,38 @@
+<dialog id="my_modal_1" class="modal" open>
+    <div class="modal-box">
+
+        <div class="flex flex-col">
+            <div class="flex flex-col justify-between">
+                <span>Description: </span>
+                <p>{{ transaction.description}}</p>
+            </div>
+            <div class="divider"></div>
+            <div class="flex flex-col justify-between">
+                <span>amount: </span>
+                <p>{{ transaction.amount}}</p>
+            </div>
+            <div class="divider"></div>
+            <div class="flex flex-col justify-between">
+                <span>action: </span>
+                <p>{{ transaction.action}}</p>
+            </div>
+            <div class="divider"></div>
+            <div class="flex flex-col justify-between">
+                <span>date: </span>
+                <p>{{ transaction.occurred_at}}</p>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div>
+            <form hx-post="{% url 'ledger:transaction_delete' transaction.id %}" hx-swap="none" hx-confirm="Delete this transaction?">
+                    {% csrf_token %}
+                    <button class="btn btn-soft btn-error">DELETE</button>
+            </form>
+        </div>
+        <div class="modal-action">
+            <form method="dialog">
+                <button class="btn">Close</button>
+            </form>
+        </div>
+    </div>
+</dialog>

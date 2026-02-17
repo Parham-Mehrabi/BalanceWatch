@@ -96,7 +96,7 @@
 
     <div></div>
 
-    <div id="transactions_list_parent" hx-get="{% url 'ledger:list_transactions' %}" hx-trigger="load"
+    <div id="transactions_list_parent" hx-get="{% url 'ledger:list_transactions' %}" hx-trigger="load, transaction-deleted from:body"
         hx-target="#transactions_list_parent" hx-swap="innerHTML"></div>
 
     <div class="flex w-full flex-col gap-2 justify-between h-full lg:col-span-2" id="transactions_graph_parent"

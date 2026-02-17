@@ -1,10 +1,4 @@
 <div>
-    <button class="btn"
-        hx-get="{% url 'ledger:list_transactions' %}"
-        hx-target="#transactions_list_parent"
-        hx-swap="innerHTML">
-  Refresh
-</button>
     <table class="table table-pin-rows table-pin-cols border">
         <thead>
             <tr>
@@ -13,19 +7,26 @@
                 <th class="rounded-xl">amount</th>
             </tr>
         </thead>
+        <div id="modal_retrieve"></div>
         <tbody>
             {% for transaction in transactions %}
             {% if transaction.action == "deposit" %}
-            <tr class="hover:bg-success/50 bg-success/20">
+            <tr class="hover:bg-success/50 bg-success/20"
+            hx-get="{% url 'ledger:transaction_detail' transaction.pk %}"
+            hx-target="#modal_retrieve"
+            >
                 <td>{{ transaction.occurred_at}}</td>
                 <td>{{ transaction.action|capfirst}}</td>
-                <td>{{ transaction.amount}}</td>
+                <td><span class="money">{{ transaction.amount}}</span></td>
             </tr>
             {% else %}
-            <tr class="hover:bg-error/50 bg-error/20">
+            <tr class="hover:bg-error/50 bg-error/20"
+            hx-get="{% url 'ledger:transaction_detail' transaction.pk %}"
+            hx-target="#modal_retrieve"
+            >
                 <td>{{ transaction.occurred_at}}</td>
                 <td>{{ transaction.action|capfirst}}</td>
-                <td>{{ transaction.amount}}</td>
+                <td><span class="money">{{ transaction.amount}}</span></td>
             </tr>
             {% endif %}
             {% empty%}
@@ -41,7 +42,7 @@
         <a hx-get="{% url 'ledger:list_transactions' %}?page={{ page_obj.previous_page_number }}"
            hx-target="#transactions_list_parent"
            hx-swap="innerHTML"
-           class="btn">
+           class="btn btn-primary">
             Previous
         </a>
     {% endif %}
@@ -49,7 +50,7 @@
         <a hx-get="{% url 'ledger:list_transactions' %}?page={{ page_obj.next_page_number }}"
            hx-target="#transactions_list_parent"
            hx-swap="innerHTML"
-           class="btn">
+           class="btn btn-primary">
             Next
         </a>
     {% endif %}

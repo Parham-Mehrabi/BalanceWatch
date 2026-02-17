@@ -152,10 +152,10 @@ LOGIN_REDIRECT_URL = "home"
 
 
 UI_THEMES = [
-    "dark",
     "night",
-    'dracula',
-    'dim',
     "light",
+    'dracula',
+    "dark",
     "valentine",
+    'dim',
     ]
