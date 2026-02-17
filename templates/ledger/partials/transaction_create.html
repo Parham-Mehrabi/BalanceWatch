@@ -1,0 +1,56 @@
+<div class="border rounded-xl border-dashed m-2 p-2">
+    <form hx-post="{% url 'ledger:create_transaction' %}" novalidate method="post" class="w-full flex flex-col gap-6">
+        {% csrf_token %}
+        <div class="flex justify-between flex-col">
+                {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+            {% endfor %}    
+            <label for="{{ form.wallet.id_for_label }}">{{ form.wallet.label }}: </label>
+            {{ form.wallet }}
+            {% for error in form.wallet.errors %}
+            <p class="mt-1 text-sm text-error">
+                {{ error }}
+            </p>
+            {% endfor %}
+        </div>
+
+        <div class="flex justify-between flex-col">
+            <label for="{{ form.amount.id_for_label }}">{{ form.amount.label }}: </label>
+            {{ form.amount }}
+            {% for error in form.amount.errors %}
+            <p class="mt-1 text-sm text-error">
+                {{ error }}
+            </p>
+            {% endfor %}
+        </div>
+        <div class="flex justify-between flex-col">
+            <label for="{{ form.action.id_for_label }}">{{ form.action.label }}: </label>
+            {{ form.action }}
+            {% for error in form.action.errors %}
+            <p class="mt-1 text-sm text-error">
+                {{ error }}
+            </p>
+            {% endfor %}
+        </div>
+        <div class="flex justify-between flex-col">
+            <label for="{{ form.occurred_at.id_for_label }}">Date: </label>
+            {{ form.occurred_at }}
+            {% for error in form.occurred_at.errors %}
+            <p class="mt-1 text-sm text-error">
+                {{ error }}
+            </p>
+            {% endfor %}
+        </div>
+        <div class="flex justify-between flex-col">
+            <label for="{{ form.description.id_for_label }}">{{form.description.label}}: </label>
+            {{ form.description }}
+                {% for error in form.description.errors %}
+            <p class="mt-1 text-sm text-error">
+                {{ error }}
+            </p>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-success btn-dash w-5/12">Save</button>
+    </form>
+</div>

@@ -1,30 +1,28 @@
-<div>
+<div class="">
     <table class="table table-pin-rows table-pin-cols border">
         <thead>
             <tr>
-                <th class="rounded-xl">date</th>
-                <th class="rounded-xl">action</th>
-                <th class="rounded-xl">amount</th>
+                <th class="rounded-xl">Date</th>
+                <th class="rounded-xl">Action</th>
+                <th class="rounded-xl">Amount</th>
             </tr>
         </thead>
         <div id="modal_retrieve"></div>
         <tbody>
             {% for transaction in transactions %}
             {% if transaction.action == "deposit" %}
-            <tr class="hover:bg-success/50 bg-success/20"
-            hx-get="{% url 'ledger:transaction_detail' transaction.pk %}"
-            hx-target="#modal_retrieve"
-            >
-                <td>{{ transaction.occurred_at}}</td>
+            <tr class="hover:bg-success/50 bg-success/20" hx-get="{% url 'ledger:transaction_detail' transaction.pk %}"
+                hx-target="#modal_retrieve">
+                <td style="white-space:nowrap; word-break:normal; overflow-wrap:normal;">{{ transaction.occurred_at}}
+                </td>
                 <td>{{ transaction.action|capfirst}}</td>
                 <td><span class="money">{{ transaction.amount}}</span></td>
             </tr>
             {% else %}
-            <tr class="hover:bg-error/50 bg-error/20"
-            hx-get="{% url 'ledger:transaction_detail' transaction.pk %}"
-            hx-target="#modal_retrieve"
-            >
-                <td>{{ transaction.occurred_at}}</td>
+            <tr class="hover:bg-error/50 bg-error/20" hx-get="{% url 'ledger:transaction_detail' transaction.pk %}"
+                hx-target="#modal_retrieve">
+                <td style="white-space:nowrap; word-break:normal; overflow-wrap:normal;">{{ transaction.occurred_at}}
+                </td>
                 <td>{{ transaction.action|capfirst}}</td>
                 <td><span class="money">{{ transaction.amount}}</span></td>
             </tr>
@@ -38,21 +36,21 @@
     </table>
 
     {% if is_paginated %}
-    {% if page_obj.has_previous %}
+        <div class="p-2 g-2">
+            <span>page {{ page_obj.number}} of {{page_obj.paginator.num_pages}}.</span>
+        {% if page_obj.has_previous %}
         <a hx-get="{% url 'ledger:list_transactions' %}?page={{ page_obj.previous_page_number }}"
-           hx-target="#transactions_list_parent"
-           hx-swap="innerHTML"
-           class="btn btn-primary">
+            hx-target="#transactions_list_parent" hx-swap="innerHTML" class="btn btn-primary">
             Previous
         </a>
-    {% endif %}
-    {% if page_obj.has_next %}
+        {% endif %}
+        {% if page_obj.has_next %}
         <a hx-get="{% url 'ledger:list_transactions' %}?page={{ page_obj.next_page_number }}"
-           hx-target="#transactions_list_parent"
-           hx-swap="innerHTML"
-           class="btn btn-primary">
+            hx-target="#transactions_list_parent" hx-swap="innerHTML" class="btn btn-primary">
             Next
         </a>
-    {% endif %}
-    {% endif %}
+        {% endif %}
+        {% endif %}
+        </div>
+
 </div>
