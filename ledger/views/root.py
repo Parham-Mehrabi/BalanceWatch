@@ -5,6 +5,5 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 class HomeView(LoginRequiredMixin, TemplateView):
     
-    template_name = "layouts/home.html"
+    template_name = "ledger/home.html"
     login_url = "account/login"
-    

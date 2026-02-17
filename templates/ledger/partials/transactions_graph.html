@@ -1,0 +1,55 @@
+<div id="transactions-graph">
+    {{ labels|json_script:"tg-labels" }}
+    {{ total_deposit|json_script:"tg-total-deposit" }}
+    {{ total_withdraw|json_script:"tg-total-withdraw" }}
+    {{ deposit_count|json_script:"tg-deposit-count" }}
+    {{ withdraw_count|json_script:"tg-withdraw-count" }}
+    <div class="divider"></div>
+    <div class="grid grid-cols-1 lg:grid-cols-2">
+        <canvas id="transactionsChart" class="w-full"></canvas>
+        <div>
+
+
+        <div class="overflow-x-auto">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Total Deposit</th>
+                        <th>Total Withdraw</th>
+                        <th>Deposit Count</th>
+                        <th>Withdraw Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data_table %}
+                    <tr>
+                        <td style="white-space:nowrap; word-break:normal; overflow-wrap:normal;">{{row.month}}</td>
+                        <td>{{ row.total_deposit }}</td>
+                        <td>{{ row.total_withdraw }}</td>
+                        <td>{{ row.deposit_count }}</td>
+                        <td>{{ row.withdraw_count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <table class="table border table-xs w-fit">
+            <tr>
+                <th>Total transactions in last 6 months:</td>
+                <td class="text-info"> {{ total_transactions}}</td>
+            </tr>
+            <tr>
+                <th>Total withdraw in last 6 months:</td>
+                <td class="text-success"> {{ total_deposit_sum }}</td>
+            </tr>
+            <tr>
+                <th>Total deposit in last 6 months:</td>
+                <td class="text-error"> {{ total_withdraw_sum }}</td>
+            </tr>
+        </table>
+                </div>
+    </div>
+</div>
+<div class="divider"></div>
+</div>

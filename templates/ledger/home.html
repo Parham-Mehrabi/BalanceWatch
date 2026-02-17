@@ -1,0 +1,118 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block costume_js %}
+<script src="{% static 'js/htmx.min.js' %}"></script>
+<script src="{% static 'js/chart.umd.min.js' %}"></script>
+
+
+<script>
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        function readJsonScript(container, id) {
+            const tag = container.querySelector(`#${id}`);
+            return tag ? JSON.parse(tag.textContent) : null;
+        }
+
+        function initTransactionsGraph(target) {
+            const container = target.querySelector("#transactions-graph");
+            if (!container) return;
+
+            const labels = readJsonScript(container, "tg-labels") || [];
+            const totalDeposit = readJsonScript(container, "tg-total-deposit") || [];
+            const totalDepositCount = readJsonScript(container, "tg-deposit-count") || [];
+            const totalWithdraw = readJsonScript(container, "tg-total-withdraw") || [];
+            const totalWithdrawCount = readJsonScript(container, "tg-withdraw-count") || [];
+
+            const canvas = container.querySelector("#transactionsChart");
+            if (!canvas) return;
+
+            // if HTMX reloads this partial, destroy old instance
+            if (canvas._chart) {
+                canvas._chart.destroy();
+            }
+
+            canvas._chart = new Chart(canvas.getContext("2d"), {
+                type: "bar",
+                data: {
+                    labels,
+                    datasets: [
+                        { label: "Deposit", data: totalDeposit },
+                        { label: "Withdraw", data: totalWithdraw },
+                    ],
+                },
+                options: {
+                    responsive: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                // add an extra line to the tooltip for the hovered month
+                                afterBody: (items) => {
+                                    if (!items?.length) return "";
+                                    const i = items[0].dataIndex;
+                                    let n = 0
+                                    if (items[0].dataset.label == "Deposit") {
+                                        n = totalDepositCount[i]
+                                    } else if (items[0].dataset.label == "Withdraw") {
+                                        n = totalWithdrawCount[i]
+                                    }
+                                    return `transaction count: ${n}`;
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+        }
+
+        // When HTMX swaps in new content
+        document.body.addEventListener("htmx:afterSwap", (e) => {
+            initTransactionsGraph(e.target);
+            const moneyElements = document.querySelectorAll("span.money");
+            console.log(moneyElements)
+            moneyElements.forEach(function (el) {
+                let rawValue = el.textContent.trim();
+
+                rawValue = rawValue.replace(/,/g, '');
+                console.log(rawValue)
+                // Convert to number
+                const number = Number(rawValue);
+
+                // Only format if it's a valid number
+                if (!isNaN(number)) {
+                    el.textContent = number.toLocaleString('en-US');
+                }
+            });
+        });
+
+        // In case it's already there on first load (sometimes)
+        document.addEventListener("DOMContentLoaded", () => {
+            initTransactionsGraph(document);
+        });
+    })
+
+
+</script>
+
+{% endblock %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+
+<div class="grid sm:grid-cols-1 lg:grid-cols-2 gap-2">
+    <div class="text-wrap">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum iste ipsam quisquam in
+        quas corporis commodi tempora, sint qui saepe!</div>
+    <div class="text-wrap">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum iste ipsam quisquam in
+        quas corporis commodi tempora, sint qui saepe!</div>
+        <div class="flex w-full flex-col gap-2 justify-between h-full lg:col-span-2" id="transactions_graph_parent"
+        hx-get="{% url 'ledger:transactions_graph' %}" hx-trigger="load" hx-target="#transactions_graph_parent"
+        hx-swap="innerHTML">
+        <div class="skeleton w-full h-full "></div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

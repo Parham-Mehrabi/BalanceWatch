@@ -17,10 +17,12 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from balance_watch.views import HomeView
+from ledger.views import HomeView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", HomeView.as_view(), name="home"),
-    path("account/", include("account.urls", namespace="account"))
+    path("account/", include("account.urls", namespace="account")),
+    path("ledger/", include("ledger.urls", namespace="ledger")),
+    
 ]
