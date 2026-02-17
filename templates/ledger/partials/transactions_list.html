@@ -1,0 +1,57 @@
+<div>
+    <button class="btn"
+        hx-get="{% url 'ledger:list_transactions' %}"
+        hx-target="#transactions_list_parent"
+        hx-swap="innerHTML">
+  Refresh
+</button>
+    <table class="table table-pin-rows table-pin-cols border">
+        <thead>
+            <tr>
+                <th class="rounded-xl">date</th>
+                <th class="rounded-xl">action</th>
+                <th class="rounded-xl">amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            {% if transaction.action == "deposit" %}
+            <tr class="hover:bg-success/50 bg-success/20">
+                <td>{{ transaction.occurred_at}}</td>
+                <td>{{ transaction.action|capfirst}}</td>
+                <td>{{ transaction.amount}}</td>
+            </tr>
+            {% else %}
+            <tr class="hover:bg-error/50 bg-error/20">
+                <td>{{ transaction.occurred_at}}</td>
+                <td>{{ transaction.action|capfirst}}</td>
+                <td>{{ transaction.amount}}</td>
+            </tr>
+            {% endif %}
+            {% empty%}
+            <tr>
+                No transactions yet
+            </tr>
+            {% endfor%}
+        </tbody>
+    </table>
+
+    {% if is_paginated %}
+    {% if page_obj.has_previous %}
+        <a hx-get="{% url 'ledger:list_transactions' %}?page={{ page_obj.previous_page_number }}"
+           hx-target="#transactions_list_parent"
+           hx-swap="innerHTML"
+           class="btn">
+            Previous
+        </a>
+    {% endif %}
+    {% if page_obj.has_next %}
+        <a hx-get="{% url 'ledger:list_transactions' %}?page={{ page_obj.next_page_number }}"
+           hx-target="#transactions_list_parent"
+           hx-swap="innerHTML"
+           class="btn">
+            Next
+        </a>
+    {% endif %}
+    {% endif %}
+</div>

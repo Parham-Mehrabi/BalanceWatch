@@ -33,21 +33,24 @@
                     {% endfor %}
                 </tbody>
             </table>
+
         </div>
-        <table class="table border table-xs w-fit">
-            <tr>
-                <th>Total transactions in last 6 months:</td>
-                <td class="text-info font-semibold text-lg"> <span class="money">{{ total_transactions }}</span></td>
-            </tr>
-            <tr>
-                <th>Total withdraw in last 6 months:</td>
-                <td class="text-success font-semibold text-lg"> <span class="money">{{ total_deposit_sum }}</span></td>
-            </tr>
-            <tr>
-                <th>Total deposit in last 6 months:</td>
-                <td class="text-error font-semibold text-lg"> <span class="money">{{ total_withdraw_sum }}</span></td>
-            </tr>
-        </table>
+        <div class="flex justify-center">
+            <table class="table border table-xs w-fit">
+                <tr>
+                    <th>Total transactions in last 6 months:</td>
+                        <td class="text-info font-semibold text-lg"> <span class="money">{{ total_transactions }}</span></td>
+                    </tr>
+                    <tr>
+                        <th>Total withdraw in last 6 months:</td>
+                            <td class="text-success font-semibold text-lg"> <span class="money">{{ total_deposit_sum }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Total deposit in last 6 months:</td>
+                                <td class="text-error font-semibold text-lg"> <span class="money">{{ total_withdraw_sum }}</span></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
     </div>
 </div>

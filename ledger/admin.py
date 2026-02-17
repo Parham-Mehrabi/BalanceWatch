@@ -11,6 +11,6 @@ class WalletAdmin(admin.ModelAdmin):
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ("id", "action", "amount", "occurred_at")
+    list_display = ("id", "action", "amount", "occurred_at", "wallet")
     search_fields = ("description", "amount")
     list_filter = "action",

@@ -92,17 +92,19 @@
 
 {% block content %}
 
-<div class="grid sm:grid-cols-1 lg:grid-cols-2 gap-2">
-    <div class="text-wrap">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum iste ipsam quisquam in
-        quas corporis commodi tempora, sint qui saepe!</div>
-    <div class="text-wrap">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum iste ipsam quisquam in
-        quas corporis commodi tempora, sint qui saepe!</div>
-        <div class="flex w-full flex-col gap-2 justify-between h-full lg:col-span-2" id="transactions_graph_parent"
+<div class="grid sm:grid-cols-1 lg:grid-cols-2 gap-2 p-1 m-1">
+
+    <div></div>
+
+    <div id="transactions_list_parent" hx-get="{% url 'ledger:list_transactions' %}" hx-trigger="load"
+        hx-target="#transactions_list_parent" hx-swap="innerHTML"></div>
+
+    <div class="flex w-full flex-col gap-2 justify-between h-full lg:col-span-2" id="transactions_graph_parent"
         hx-get="{% url 'ledger:transactions_graph' %}" hx-trigger="load" hx-target="#transactions_graph_parent"
         hx-swap="innerHTML">
         <div class="skeleton w-full h-full "></div>
     </div>
-</div>
+
 </div>
 
 {% endblock %}
