@@ -38,6 +38,7 @@ class MyLogoutView(LogoutView):
 
 class MyPasswordResetView(PasswordResetView):
     success_url = reverse_lazy("account:password_reset_done")
+    template_name = "account/reset_password.html"
 
 
 

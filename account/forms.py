@@ -49,7 +49,7 @@ class RegisterForm(UserCreationForm):
         })    
         self.fields["email"].widget.attrs.update({
             "class": input_classes2,
-            "placeholder": "Optional",
+            "placeholder": "Required",
         })    
 
     class Meta:

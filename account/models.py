@@ -11,6 +11,9 @@ class User(AbstractUser):
     
     balance_goal = models.DecimalField(max_digits=20, decimal_places=0, default=0)
 
+    email = models.EmailField(unique=True, blank=False, null=False)
+    email_verified = models.BooleanField(default=False)
+
 
 class Subscription(models.Model):
 

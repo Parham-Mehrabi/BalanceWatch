@@ -24,7 +24,7 @@
       <ul tabindex="0" class="menu menu-compact dropdown-content mt-5 p-2 shadow-lg bg-base-100 rounded-box w-52">
 
         {% if is_active == True %}
-        <li class="text-wrap font-semibold text-info break-words">Subscription: {{ remaining_days }}</li>
+        <li class="text-wrap font-semibold text-info">Subscription: {{ remaining_days }}</li>
         {% else %}
         <li class="text-error font-semibold">
           <span class="block">subscription Expired</span>
