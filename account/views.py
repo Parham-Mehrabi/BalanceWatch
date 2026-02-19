@@ -36,7 +36,6 @@ class SubExpired(LoginRequiredMixin, TemplateView):
         return super().dispatch(request, *args, **kwargs)
     
 
-
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'account/profile.html'
 

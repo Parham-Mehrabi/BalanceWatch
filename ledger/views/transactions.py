@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from ledger.models import Transaction
 from ledger.forms import CreateTransactionForm
 
+
 class ListTransactionsView(LoginRequiredMixin, ListView):
     model = Transaction
     context_object_name = "transactions"

@@ -36,21 +36,30 @@
     </table>
 
     {% if is_paginated %}
-        <div class="p-2 g-2">
-            <span>page {{ page_obj.number}} of {{page_obj.paginator.num_pages}}.</span>
+    <div class="p-2 g-2">
+        <span>page {{ page_obj.number}} of {{page_obj.paginator.num_pages}}.</span>
         {% if page_obj.has_previous %}
         <a hx-get="{% url 'ledger:list_transactions' %}?page={{ page_obj.previous_page_number }}"
             hx-target="#transactions_list_parent" hx-swap="innerHTML" class="btn btn-primary">
             Previous
         </a>
+        {% else %}
+        <button disabled class="disable btn btn-primary">
+            Previous
+        </button>
         {% endif %}
         {% if page_obj.has_next %}
         <a hx-get="{% url 'ledger:list_transactions' %}?page={{ page_obj.next_page_number }}"
             hx-target="#transactions_list_parent" hx-swap="innerHTML" class="btn btn-primary">
             Next
         </a>
+        {% else %}
+        <button disabled class="disable btn btn-primary">
+            Next
+        </button>
+
         {% endif %}
-        {% endif %}
-        </div>
+    </div>
+    {% endif %}
 
 </div>

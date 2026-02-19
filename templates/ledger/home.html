@@ -96,15 +96,18 @@
 
 
     <div id="transactions_create_parent" hx-get="{% url 'ledger:create_transaction' %}" hx-trigger="load"
-        hx-target="#transactions_create_parent" hx-swap="innerHTML"></div>
+        hx-swap="innerHTML"></div>
 
-    <div id="transactions_list_parent" hx-get="{% url 'ledger:list_transactions' %}" hx-trigger="load, transaction-deleted from:body, transaction-created from:body"
+    <div id="transactions_list_parent" hx-get="{% url 'ledger:list_transactions' %}"
+        hx-trigger="load, transaction-deleted from:body, transaction-created from:body"
         hx-target="#transactions_list_parent" hx-swap="innerHTML" class="lg:col-span-2"></div>
 
-    <div class="flex w-full flex-col gap-2 justify-between h-full lg:col-span-2" id="transactions_graph_parent"
-        hx-get="{% url 'ledger:transactions_graph' %}" hx-trigger="load" hx-target="#transactions_graph_parent"
-        hx-swap="innerHTML">
-        <div class="skeleton w-full h-full "></div>
+    <div id="stats_parent" hx-get="{% url 'ledger:stats' %}" hx-trigger="load, transaction-deleted from:body, transaction-created from:body"
+        hx-swap="innerHTML" class="lg:col-span-3">
+    </div>
+
+    <div class="flex w-full flex-col gap-2 justify-between h-full lg:col-span-3" id="transactions_graph_parent"
+        hx-get="{% url 'ledger:transactions_graph' %}" hx-trigger="load" hx-swap="innerHTML">
     </div>
 
 </div>

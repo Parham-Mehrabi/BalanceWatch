@@ -1,0 +1,23 @@
+<div class="stats shadow">
+  <div class="stat">
+    <div class="stat-figure text-primary">
+    </div>
+    <div class="stat-title">Todays Transactions:</div>
+    <div class="stat-value text-primary"><span class="money">{{ today_transactions_sum }}</span></div>
+    <div class="stat-desc">{{ daily_goal_percent }}% of daily goal</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-figure text-secondary">
+    </div>
+    <div class="stat-title">Balance</div>
+    <div class="stat-value text-secondary"><span class="money">{{ wallet.expected_balance }}</span> Tomans</div>
+    <div class="stat-desc">+{{wallet.foreign_balance}} {{ wallet.foreign_currency}}</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-figure text-secondary">
+    </div>
+    <div class="stat-value text-accent">{{ goal_per_cent }}%</div> 
+    <div class="stat-title">reached balance goal</div>
+  </div>
