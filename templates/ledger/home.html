@@ -95,7 +95,7 @@
 <div class="grid sm:grid-cols-1 lg:grid-cols-3 gap-2 p-1 m-1">
 
 
-    <div id="transactions_create_parent" hx-get="{% url 'ledger:create_transaction' %}" hx-trigger="load"
+    <div id="transactions_create_parent" hx-get="{% url 'ledger:create_transaction' %}" hx-trigger="load, transaction-created from:body"
         hx-swap="innerHTML"></div>
 
     <div id="transactions_list_parent" hx-get="{% url 'ledger:list_transactions' %}"
