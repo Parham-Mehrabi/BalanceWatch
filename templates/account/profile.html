@@ -69,6 +69,16 @@
 
             <div class="stat-title">Subscription ends in</div>
             <div class="text-3xl font-semibold text-info">{{ remaining_days }} days</div>
+            <div class="divider"></div>
+            <ul class="list">
+                <a class="text-sm link text-info" href="{% url 'home' %}">Home</a>
+                <form  action="{% url 'account:logout' %}" method="post">
+                    {% csrf_token %}
+                    <button class="text-sm link text-info">
+                        Logout
+                    </button>
+                </form>
+            </ul>
         </div>
         <div class="divider"></div>
     </div>

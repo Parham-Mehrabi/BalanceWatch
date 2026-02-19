@@ -23,7 +23,11 @@ class ActiveSubscriptionMiddleware:
     WHITELIST = {
         "account:login",
         "account:register",
-        "account:subscription_expired"
+        "account:subscription_expired",
+        "account:password_reset",
+        "account:password_reset_done",
+        "account:password_reset_confirm",
+        "account:password_reset_complete",
     }
 
     def __init__(self, get_response):
@@ -36,6 +40,9 @@ class ActiveSubscriptionMiddleware:
         resolver_match = request.resolver_match        
         
         if resolver_match.view_name in self.WHITELIST:
+            return None
+        
+        if request.resolver_match.view_name.startswith("admin"):
             return None
         
         if not request.user.is_authenticated:

@@ -76,7 +76,8 @@
                         </div>
                         {% endif %}
                         <button class="btn btn-neutral mt-4" type="submit">Login</button>
-                        <a class="link link-hover">Forgot password?</a>
+                        <!-- <a class="link link-hover" onclick="alert('not developed here yet, content me at telegram for reset password : @parham_webdev')">Forgot password?</a> -->
+                        <a class="link link-hover" href="{% url 'account:password_reset' %}">Forgot password?</a>
                         <span>Don't have an account? <a class="link link-info" href="{% url 'account:register' %}">Register here</a></span>
                     </fieldset>
                 </form>

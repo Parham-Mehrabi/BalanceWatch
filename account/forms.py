@@ -108,7 +108,7 @@ class Step2Form(forms.ModelForm):
 class Step3Form(forms.ModelForm):
     class Meta:
         model = get_user_model()
-        fields = ["daily_goal_transaction"]
+        fields = ["daily_goal_transaction", "balance_goal"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -120,4 +120,11 @@ class Step3Form(forms.ModelForm):
         self.fields["daily_goal_transaction"].help_text = (
         "the amount of total transaction you are going to make daily; "
         "this goal would be fulfilled daily by making a enough transactions"
+        )
+        self.fields["balance_goal"].widget.attrs.update({
+            "class": "input input-secondary",
+            "step": 100_000_000
+        })
+        self.fields["balance_goal"].help_text = (
+        "the amount of balance you are going to reach at the end of period "
         )

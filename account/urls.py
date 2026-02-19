@@ -1,13 +1,33 @@
 from django.urls import path
-from django.contrib.auth.views import LogoutView
-from account.views import MyLoginView, SubExpired, ProfileView, RegisterView, SetupStartView, SetupStepView
+from account.views import (MyLoginView,
+                            SubExpired,
+                            ProfileView,
+                            RegisterView,
+                            SetupStartView,
+                            SetupStepView,
+                            MyPasswordResetView,
+                            MyLogoutView,
+                            MyPasswordResetDoneView,
+                            MyPasswordResetConfirmView,
+                            MyPasswordResetCompleteView,
+                        )
+
+
 
 app_name = "account"
 
 urlpatterns = [
-    path("login/", MyLoginView.as_view(), name="login"),
     path("register/", RegisterView.as_view(), name="register"),
-    path("logout/", LogoutView.as_view(next_page="account:login"), name="logout"),
+    path("login/", MyLoginView.as_view(), name="login"),
+    path("logout/", MyLogoutView.as_view(), name="logout"),
+
+    path("password_rest/", MyPasswordResetView.as_view(), name="password_reset"),
+    path('password_reset/done/', MyPasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', MyPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', MyPasswordResetCompleteView.as_view(), name='password_reset_done'),
+
+
+
     path("sub_expired/", SubExpired.as_view(), name="subscription_expired"), 
     path("profile/", ProfileView.as_view(), name="details"),
 

@@ -1,40 +1,21 @@
-from datetime import timedelta
-from django.contrib.auth.views import LoginView
-from django.contrib.auth import login
-from django.shortcuts import redirect
-from django.utils import timezone
-from django.views.generic import TemplateView, FormView, View
-from django.urls import reverse_lazy, reverse
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.template.response import TemplateResponse
-from django.http import HttpResponseBadRequest, HttpResponse
 from django.db import transaction
 from django.db.models import Sum
-from account.forms import LoginForm, RegisterForm, Step1Form, Step2Form, Step3Form
-from account.models import OnboardingProgress
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseBadRequest, HttpResponse
+from django.template.response import TemplateResponse
+from django.urls import reverse
+from django.views.generic import TemplateView, View
+from django.utils import timezone
+from django.shortcuts import redirect
+
 from ledger.models import Wallet, Transaction
-# Create your views here.
+from account.models import OnboardingProgress
+from account.forms import  Step1Form, Step2Form, Step3Form
+
 
 
 TOTAL_SETUP_STEPS = 3
 
-
-
-class MyLoginView(LoginView):
-    template_name = "account/login.html"
-    form_class = LoginForm
-    redirect_authenticated_user = True
-
-    
-
-class SubExpired(LoginRequiredMixin, TemplateView):
-    template_name = "account/sub_expired.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        if self.request.user.subscription.is_active:
-            return redirect("home")
-        return super().dispatch(request, *args, **kwargs)
-    
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'account/profile.html'
@@ -65,22 +46,6 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
 
         return context
-
-class RegisterView(FormView):
-    template_name = 'account/register.html'
-    form_class = RegisterForm
-    success_url = reverse_lazy("account:setup")
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect("home")
-        return super().dispatch(request, *args, **kwargs)
-    
-    def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)
-        return super().form_valid(form)
-
 
 
 class SetupStartView(LoginRequiredMixin, TemplateView):
