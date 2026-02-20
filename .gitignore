@@ -15,3 +15,6 @@ db.sqlite3
 
 # tailwind binary
 tailwindcss.exe
+
+
+sent_emails/

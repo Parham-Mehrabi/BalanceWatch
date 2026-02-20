@@ -159,3 +159,16 @@ UI_THEMES = [
     "valentine",
     'dim',
     ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
+# EMAIL_HOST_USER = 'balancewatch.noreplay@gmail.com'
+# GMAIL_PASSWORD = os.getenv("GMAIL_APP_PASSWORD", "")
+# DEFAULT_FROM_EMAIL = 'balancewatch.noreplay@gmail.com'
+# SERVER_EMAIL = 'balancewatch.noreplay@gmail.com'

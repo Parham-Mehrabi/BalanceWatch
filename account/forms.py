@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth import get_user_model
 from ledger.models import Wallet
 
@@ -128,3 +128,27 @@ class Step3Form(forms.ModelForm):
         self.fields["balance_goal"].help_text = (
         "the amount of balance you are going to reach at the end of period "
         )
+
+
+
+class MyPasswordResetForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["email"].widget.attrs.update({
+            "class": "input",
+            "placeholder": "Email"
+        })
+
+
+class MySetPasswordForm(SetPasswordForm):
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(user, *args, **kwargs)
+
+        self.fields["new_password1"].widget.attrs.update({
+            "class": "input",
+            "placeholder": "password"
+        })
+        self.fields["new_password2"].widget.attrs.update({
+            "class": "input",
+            "placeholder": "Confirm Password"
+        })
