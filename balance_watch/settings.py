@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "account",
     "ledger",
 
+    "axes",
+
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -59,6 +61,9 @@ MIDDLEWARE = [
 
     "balance_watch.middleware.subscription_check.ActiveSubscriptionMiddleware",
     "balance_watch.middleware.force_profile_setup.ForceProfileSetupMiddleware",
+
+    # django-axes
+    'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = "balance_watch.urls"
@@ -172,3 +177,14 @@ EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
 # GMAIL_PASSWORD = os.getenv("GMAIL_APP_PASSWORD", "")
 # DEFAULT_FROM_EMAIL = 'balancewatch.noreplay@gmail.com'
 # SERVER_EMAIL = 'balancewatch.noreplay@gmail.com'
+
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend',
+
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+AXES_FAILURE_LIMIT = 5
+AXES_COOLOFF_TIME = 1
+AXES_USE_USER_AGENT = 'AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP'
+AXES_RESET_ON_SUCCESS = True
