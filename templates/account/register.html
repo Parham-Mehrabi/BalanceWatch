@@ -1,12 +1,30 @@
 {% extends "layouts/base.html" %}
 {% load static %}
 
+{% block costume_js %}
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<script>
+  function onTurnstileSuccess(token) {
+    const el = document.querySelector('input[name="turnstile_token"]');
+    if (el) el.value = token;
+  }
+</script>
+{% endblock %}
+
 {% block title %} Register {% endblock %}
 {% block content %}
 <div class="min-h-screen flex items-center justify-center px-4">
 
     <form method="post">
         {% csrf_token %}
+        <div turnstile
+         class="cf-turnstile"
+         data-sitekey="0x4AAAAAACf1rbl08TcM6MSF"
+         data-callback="onTurnstileSuccess"
+         >
+            {{ form.turnstile_token }}
+        </div>
         {% if form.non_field_errors %}
         <div class="mb-4 rounded-md bg-red-500/10 border border-red-500/30 p-3 text-red-400 text-sm">
             {% for error in form.non_field_errors %}

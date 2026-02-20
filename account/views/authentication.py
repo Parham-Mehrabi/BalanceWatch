@@ -1,9 +1,8 @@
-from django.contrib.auth.views import LoginView, PasswordResetView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.contrib.auth import login
 from django.views.generic import FormView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-from django.contrib.auth.views import LogoutView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, PasswordChangeDoneView
 
 from account.forms import LoginForm, RegisterForm, MyPasswordResetForm, MySetPasswordForm
 
@@ -25,9 +24,14 @@ class RegisterView(FormView):
             return redirect("home")
         return super().dispatch(request, *args, **kwargs)
     
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request
+        return kwargs
+
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user)
+        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
         return super().form_valid(form)
 
 
@@ -42,6 +46,12 @@ class MyPasswordResetView(PasswordResetView):
     email_template_name = "account/password_reset/email_template.html"
     form_class = MyPasswordResetForm
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request
+        return kwargs
+
+
 class MyPasswordResetDoneView(PasswordResetDoneView):
     template_name = "account/password_reset/password_reset_done.html"
 
@@ -52,4 +62,3 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
 
 class MyPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = "account/password_reset/reset_password_complete.html"
-

@@ -1,10 +1,14 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from ledger.models import Wallet
+from balance_watch.turnstile import verify_turnstile
+
 
 class LoginForm(AuthenticationForm):
-    def __init__(self, request = ..., *args, **kwargs):
+    turnstile_token = forms.CharField(widget=forms.HiddenInput())
+    def __init__(self, request=None, *args, **kwargs):
         super().__init__(request, *args, **kwargs)
         
         self.fields["username"].widget.attrs.update({
@@ -15,14 +19,25 @@ class LoginForm(AuthenticationForm):
             "class": "input",
             "placeholder": "Password"
         })
-  
+
+    def clean(self):
+        cleaned = super().clean()
+        token = cleaned.get("turnstile_token")
+        remote_ip = self.request.META.get("REMOTE_ADDR")
+        if not token or not verify_turnstile(token=token, remoteip=remote_ip):
+            raise ValidationError("Human verification Failed. Please try again.")
+        
+        return cleaned
   
 
 class RegisterForm(UserCreationForm):
-    def __init__(self, *args, **kwargs):
-        
-        super().__init__(*args, **kwargs)
 
+    turnstile_token = forms.CharField(widget=forms.HiddenInput())
+
+    def __init__(self,  *args, **kwargs):
+        self.request = kwargs.pop("request", None)
+
+        super().__init__(*args, **kwargs)
         input_classes = "block min-w-0 grow bg-transparent py-1.5 pr-3 pl-1 text-base text-white placeholder:text-gray-500 focus:outline-none sm:text-sm/6"
         input_classes2 = "block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
         self.fields["username"].widget.attrs.update({
@@ -51,6 +66,15 @@ class RegisterForm(UserCreationForm):
             "class": input_classes2,
             "placeholder": "Required",
         })    
+
+    def clean(self):
+        cleaned = super().clean()
+        token = cleaned.get("turnstile_token")
+        remote_ip = self.request.META.get("REMOTE_ADDR")
+        if not token or not verify_turnstile(token=token, remoteip=remote_ip):
+            raise ValidationError("Human verification Failed. Please try again.")
+        
+        return cleaned
 
     class Meta:
         model = get_user_model()
@@ -132,16 +156,24 @@ class Step3Form(forms.ModelForm):
 
 
 class MyPasswordResetForm(PasswordResetForm):
+    turnstile_token = forms.CharField(widget=forms.HiddenInput())
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request", None)
         super().__init__(*args, **kwargs)
         self.fields["email"].widget.attrs.update({
             "class": "input",
             "placeholder": "Email"
         })
-
+    def clean(self):
+        cleaned = super().clean()
+        token = cleaned.get("turnstile_token")
+        remote_ip = self.request.META.get("REMOTE_ADDR")
+        if not token or not verify_turnstile(token=token, remoteip=remote_ip):
+            raise ValidationError("Human verification Failed. Please try again.")
 
 class MySetPasswordForm(SetPasswordForm):
     def __init__(self, user, *args, **kwargs):
+        self.request = kwargs.pop("request", None)
         super().__init__(user, *args, **kwargs)
 
         self.fields["new_password1"].widget.attrs.update({

@@ -4,6 +4,17 @@
 {% block title %} Login {% endblock %}
 
 {% block content %}
+
+{% block costume_js %}
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<script>
+  function onTurnstileSuccess(token) {
+    const el = document.querySelector('input[name="turnstile_token"]');
+    if (el) el.value = token;
+  }
+</script>
+{% endblock %}
 <div>
     <div
         class="mx-auto grid max-w-2xl grid-cols-1 items-center gap-x-8 gap-y-16 px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:grid-cols-2 lg:px-8">
@@ -75,6 +86,13 @@
                             {{ form.non_field_errors }}
                         </div>
                         {% endif %}
+                                <div turnstile
+                            class="cf-turnstile"
+                            data-sitekey="0x4AAAAAACf1rbl08TcM6MSF"
+                            data-callback="onTurnstileSuccess"
+                            >
+                                {{ form.turnstile_token }}
+                            </div>
                         <button class="btn btn-neutral mt-4" type="submit">Login</button>
                         <!-- <a class="link link-hover" onclick="alert('not developed here yet, content me at telegram for reset password : @parham_webdev')">Forgot password?</a> -->
                         <a class="link link-hover" href="{% url 'account:password_reset' %}">Forgot password?</a>
