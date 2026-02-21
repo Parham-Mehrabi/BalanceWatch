@@ -13,7 +13,6 @@ class MyLoginView(LoginView):
     redirect_authenticated_user = True
 
 
-
 class RegisterView(FormView):
     template_name = 'account/register.html'
     form_class = RegisterForm
@@ -23,7 +22,7 @@ class RegisterView(FormView):
         if request.user.is_authenticated:
             return redirect("home")
         return super().dispatch(request, *args, **kwargs)
-    
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs["request"] = self.request
@@ -55,10 +54,12 @@ class MyPasswordResetView(PasswordResetView):
 class MyPasswordResetDoneView(PasswordResetDoneView):
     template_name = "account/password_reset/password_reset_done.html"
 
+
 class MyPasswordResetConfirmView(PasswordResetConfirmView):
     success_url = reverse_lazy("account:password_reset_complete")
     template_name = "account/password_reset/password_reset_confirm.html"
     form_class = MySetPasswordForm
+
 
 class MyPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = "account/password_reset/reset_password_complete.html"

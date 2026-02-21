@@ -8,9 +8,10 @@ from balance_watch.turnstile import verify_turnstile
 
 class LoginForm(AuthenticationForm):
     turnstile_token = forms.CharField(widget=forms.HiddenInput())
+
     def __init__(self, request=None, *args, **kwargs):
         super().__init__(request, *args, **kwargs)
-        
+
         self.fields["username"].widget.attrs.update({
             "class": "input",
             "placeholder": "Username"
@@ -25,10 +26,11 @@ class LoginForm(AuthenticationForm):
         token = cleaned.get("turnstile_token")
         remote_ip = self.request.META.get("REMOTE_ADDR")
         if not token or not verify_turnstile(token=token, remoteip=remote_ip):
-            raise ValidationError("Human verification Failed. Please try again.")
-        
+            raise ValidationError(
+                "Human verification Failed. Please try again.")
+
         return cleaned
-  
+
 
 class RegisterForm(UserCreationForm):
 
@@ -48,37 +50,39 @@ class RegisterForm(UserCreationForm):
         self.fields["password1"].widget.attrs.update({
             "class": input_classes,
             "placeholder": "Required",
-        })    
+        })
 
         self.fields["password2"].widget.attrs.update({
             "class": input_classes,
             "placeholder": "Required",
-        })    
+        })
         self.fields["first_name"].widget.attrs.update({
             "class": input_classes2,
             "placeholder": "Optional",
-        })    
+        })
         self.fields["last_name"].widget.attrs.update({
             "class": input_classes2,
             "placeholder": "Optional",
-        })    
+        })
         self.fields["email"].widget.attrs.update({
             "class": input_classes2,
             "placeholder": "Required",
-        })    
+        })
 
     def clean(self):
         cleaned = super().clean()
         token = cleaned.get("turnstile_token")
         remote_ip = self.request.META.get("REMOTE_ADDR")
         if not token or not verify_turnstile(token=token, remoteip=remote_ip):
-            raise ValidationError("Human verification Failed. Please try again.")
-        
+            raise ValidationError(
+                "Human verification Failed. Please try again.")
+
         return cleaned
 
     class Meta:
         model = get_user_model()
-        fields = ("username", "password1", "password2", "first_name", "last_name", "email")
+        fields = ("username", "password1", "password2",
+                  "first_name", "last_name", "email")
 
 
 class Step1Form(forms.ModelForm):
@@ -88,13 +92,13 @@ class Step1Form(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-    
+
         self.fields["foreign_currency"].widget.attrs.update({
             "class": "input input-secondary",
         })
         self.fields["foreign_currency"].help_text = (
-        "tell BalanceWatch how to calculate your foreign balance "
-        "based on the selected currency"
+            "tell BalanceWatch how to calculate your foreign balance "
+            "based on the selected currency"
         )
 
         self.fields["foreign_balance"].widget.attrs.update({
@@ -107,9 +111,8 @@ class Step1Form(forms.ModelForm):
 class Step2Form(forms.ModelForm):
     class Meta:
         model = Wallet
-        fields = ("initial_balance", "expected_balance")
+        fields = ("initial_balance",)
 
-    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -118,15 +121,9 @@ class Step2Form(forms.ModelForm):
             "step": 100_000_000
         })
         self.fields["initial_balance"].help_text = (
-        "how much money you already have in your account "
-        "declare that based on tomans"
+            "how much money you already have in your account "
+            "declare that based on tomans"
         )
-
-        self.fields["expected_balance"].widget.attrs.update({
-            "class": "input input-secondary",
-            "step": 100_000_000
-        })
-        self.fields["expected_balance"].help_text = "this is your goal, how much money are you going to save by the end of the period"
 
 
 class Step3Form(forms.ModelForm):
@@ -142,21 +139,21 @@ class Step3Form(forms.ModelForm):
             "step": 1_000_000
         })
         self.fields["daily_goal_transaction"].help_text = (
-        "the amount of total transaction you are going to make daily; "
-        "this goal would be fulfilled daily by making a enough transactions"
+            "the amount of total transaction you are going to make daily; "
+            "this goal would be fulfilled daily by making a enough transactions"
         )
         self.fields["balance_goal"].widget.attrs.update({
             "class": "input input-secondary",
             "step": 100_000_000
         })
         self.fields["balance_goal"].help_text = (
-        "the amount of balance you are going to reach at the end of period "
+            "the amount of balance you are going to reach at the end of period "
         )
-
 
 
 class MyPasswordResetForm(PasswordResetForm):
     turnstile_token = forms.CharField(widget=forms.HiddenInput())
+
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request", None)
         super().__init__(*args, **kwargs)
@@ -164,12 +161,15 @@ class MyPasswordResetForm(PasswordResetForm):
             "class": "input",
             "placeholder": "Email"
         })
+
     def clean(self):
         cleaned = super().clean()
         token = cleaned.get("turnstile_token")
         remote_ip = self.request.META.get("REMOTE_ADDR")
         if not token or not verify_turnstile(token=token, remoteip=remote_ip):
-            raise ValidationError("Human verification Failed. Please try again.")
+            raise ValidationError(
+                "Human verification Failed. Please try again.")
+
 
 class MySetPasswordForm(SetPasswordForm):
     def __init__(self, user, *args, **kwargs):

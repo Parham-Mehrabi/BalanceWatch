@@ -4,7 +4,8 @@
 
 # environment variables:
 .env
-
+db.env
+env_variables.env
 
 # cache files:
 __pycache__/
@@ -18,3 +19,7 @@ tailwindcss.exe
 
 
 sent_emails/
+
+
+
+

@@ -1,0 +1,32 @@
+
+services:
+    psql:
+      image: postgres:16-alpine
+      env_file:
+        - ./db.env
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+    
+    django:
+      build: .
+      env_file:
+        - ./env_variables.env
+        - ./db.env
+      ports:
+        - 8000:8000
+      volumes:
+        - ./django-app:/app
+      depends_on:
+        - psql
+        - redis
+      command:
+        sh ./bootstrap.sh
+    redis:
+      image: redis:7-alpine
+      ports:
+        - 6379:6379
+      restart: always
+      command: 'redis-server --save --loglevel warning'
+
+volumes:
+  postgres_data:
