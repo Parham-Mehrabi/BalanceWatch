@@ -93,8 +93,12 @@ WSGI_APPLICATION = "balance_watch.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DB"),
+        "USER": os.environ.get("POSTGRES_USER"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "HOST": 'psql',
+        "PORT": os.environ.get("DJANGO_DB_PORT"),
     }
 }
 
@@ -136,7 +140,6 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 
-
 # --
 
 STATICFILES_DIRS = [
@@ -146,10 +149,16 @@ AUTH_USER_MODEL = "account.User"
 DEFAULT_TRIAL_DURATION = timedelta(days=5)
 
 
+REDIS_KEY_PREFIX = "BalanceWatch"
+REDIS_DB = '1'
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache", #TODO: Change this later
-        "LOCATION": "balanceWatch-memcache",
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"redis://redis:6379/{REDIS_DB}",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        "KEY_PREFIX": REDIS_KEY_PREFIX,
     }
 }
 
@@ -163,7 +172,7 @@ UI_THEMES = [
     "dark",
     "valentine",
     'dim',
-    ]
+]
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
