@@ -21,9 +21,10 @@ https:// balance-watch.site, https://www.balance-watch.site {
     
     import balancewatch_static
 
-    header_up X-Forwarded-For {http.request.header.CF-Connecting-IP}
 
-    reverse_proxy django:8000
+    reverse_proxy django:8000 {
+        header_up X-Forwarded-For {http.request.header.CF-Connecting-IP}
+    }
 
 }
 
