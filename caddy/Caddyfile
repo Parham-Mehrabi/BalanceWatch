@@ -1,4 +1,6 @@
-:80 {
+
+(balancewatch_static) {
+
     handle_path /static/* {
         root * /srv/static
         file_server
@@ -7,6 +9,21 @@
         root * /srv/media
         file_server
     }
+}
+
+http://balance-watch.site, http://www.balance-watch.site {
+    redir https://{host}{uri} permanent
+}
+
+https:// balance-watch.site, https://www.balance-watch.site {
+
+    tls /etc/caddy/origin.pem /etc/caddy/origin.key
+    
+    import balancewatch_static
+
+    header_up X-Forwarded-For {http.request.header.CF-Connecting-IP}
 
     reverse_proxy django:8000
+
 }
+

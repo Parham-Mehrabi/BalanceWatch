@@ -46,5 +46,5 @@ services:
 volumes:
   postgres_data:
   caddy_data:
-  caddy-config:
+  caddy_config:
 
