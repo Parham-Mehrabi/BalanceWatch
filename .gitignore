@@ -20,6 +20,10 @@ tailwindcss.exe
 
 sent_emails/
 
+static_data/
+
+caddy/certs/
+caddy/logs/
 
 
 

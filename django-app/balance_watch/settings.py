@@ -13,12 +13,12 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(BASE_DIR / ".env")
+# load_dotenv(BASE_DIR / ".env")
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,11 +26,18 @@ load_dotenv(BASE_DIR / ".env")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError("DJANGO SECRET KEY IS MISSING !!!")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", False) == "TRUE"
 
-ALLOWED_HOSTS = ["*"]   # TODO: fix this
+
+# ALLOWED_HOSTS = ["*"]   # TODO: fix this
+ALLOWED_HOSTS = [
+    "balance-watch.site",
+    "www.balance-watch.site",
+]
 
 
 # Application definition
@@ -137,8 +144,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # --
 
@@ -174,18 +184,23 @@ UI_THEMES = [
     'dim',
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
+if DEBUG:
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = "smtp.gmail.com"
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_USE_SSL = False
-# EMAIL_HOST_USER = 'balancewatch.noreplay@gmail.com'
-# GMAIL_PASSWORD = os.getenv("GMAIL_APP_PASSWORD", "")
-# DEFAULT_FROM_EMAIL = 'balancewatch.noreplay@gmail.com'
-# SERVER_EMAIL = 'balancewatch.noreplay@gmail.com'
+    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+    EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
+else:
+
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = "smtp.gmail.com"
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_USE_SSL = False
+    EMAIL_HOST_USER = 'balancewatch.noreplay@gmail.com'
+    GMAIL_PASSWORD = os.getenv("GMAIL_APP_PASSWORD", "")
+    EMAIL_HOST_PASSWORD = GMAIL_PASSWORD
+    DEFAULT_FROM_EMAIL = 'balancewatch.noreplay@gmail.com'
+    SERVER_EMAIL = 'balancewatch.noreplay@gmail.com'
+
 
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesStandaloneBackend',
@@ -200,3 +215,18 @@ AXES_RESET_ON_SUCCESS = True
 
 TURNSTILE_SITE_KEY = os.environ.get("TURNSTILE_SITE_KEY", "")
 TURNSTILE_SECRET_KEY = os.environ.get("TURNSTILE_SECRET_KEY", "")
+
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
+
+AXES_PROXY_COUNT = 1
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://balance-watch.site"
+]
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True

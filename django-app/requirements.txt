@@ -15,3 +15,5 @@ urllib3==2.6.3
 
 psycopg[binary]
 django-redis
+
+gunicorn
