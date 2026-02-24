@@ -32,12 +32,15 @@ if not SECRET_KEY:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", False) == "TRUE"
 
+DEV_SERVER = os.getenv("DEV_SERVER", False) == "TRUE"
 
-# ALLOWED_HOSTS = ["*"]   # TODO: fix this
-ALLOWED_HOSTS = [
-    "balance-watch.site",
-    "www.balance-watch.site",
-]
+if DEV_SERVER:
+    ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = [
+        "balance-watch.site",
+        "www.balance-watch.site",
+    ]
 
 
 # Application definition
@@ -222,11 +225,11 @@ USE_X_FORWARDED_HOST = True
 
 AXES_PROXY_COUNT = 1
 
+if not DEV_SERVER:
+    CSRF_TRUSTED_ORIGINS = [
+        "https://balance-watch.site"
+    ]
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://balance-watch.site"
-]
-
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True

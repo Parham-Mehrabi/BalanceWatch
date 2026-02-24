@@ -24,6 +24,6 @@ static_data/
 
 caddy/certs/
 caddy/logs/
-
+dev-env.env
 
 

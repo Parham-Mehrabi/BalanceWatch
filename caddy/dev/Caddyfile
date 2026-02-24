@@ -1,0 +1,24 @@
+
+(balancewatch_static) {
+
+        handle_path /static/* {
+            root * /srv/static
+            file_server
+        }
+        handle_path /media/* {
+            root * /srv/media
+            file_server
+        }
+    }
+
+
+:8080 {
+
+        
+        import balancewatch_static
+
+
+        reverse_proxy django:8000
+
+    }
+

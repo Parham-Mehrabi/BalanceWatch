@@ -1,0 +1,50 @@
+
+services:
+    psql:
+      image: postgres:16-alpine
+      env_file:
+        - ./db.env
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+    
+    django:
+      build: .
+      env_file:
+        - ./env_variables.env
+        - ./db.env
+        - ./dev-env.env
+      volumes:
+        - ./django-app:/app
+        - ./static_data:/app/staticfiles
+      depends_on:
+        - psql
+        - redis
+      command:
+        sh ./bootstrap-deploy.sh
+    redis:
+      image: redis:7-alpine
+      restart: always
+      command: 'redis-server --save --loglevel warning'
+
+
+    caddy:
+      image: caddy:2-alpine
+      ports:
+        - 8080:8080
+      volumes:
+        - ./caddy/dev/Caddyfile:/etc/caddy/Caddyfile:ro
+        - ./caddy/certs/origin.pem:/etc/caddy/origin.pem:ro
+        - ./caddy/certs/origin.key:/etc/caddy/origin.key:ro
+        - ./static_data:/srv/static:ro
+        - caddy_config:/config
+        - ./caddy/logs/:/var/log/caddy
+        - caddy_data:/data
+      
+      depends_on:
+        - django
+
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:
+
