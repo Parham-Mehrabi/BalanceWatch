@@ -18,11 +18,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from ledger.views import HomeView
+from django.http import HttpResponse
+
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("parham/khode/", admin.site.urls),
     path("", HomeView.as_view(), name="home"),
     path("account/", include("account.urls", namespace="account")),
     path("ledger/", include("ledger.urls", namespace="ledger")),
-    
+    path("_ping", lambda r: HttpResponse("OK")),   
 ]
